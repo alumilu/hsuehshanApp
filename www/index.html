@@ -61,22 +61,25 @@
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
-      <div class="container">
+      <!-- <div class="container"> -->
         <h1>Current Freeway 5 Traffic</h1>
         <h3>Nankang to Toucheng:</h3>
         <span id="nf5qosS"></span>
         <span id="nf5qosSTime"></span><p></p>
-        <button id="nf5qosSBtn" type="button" class="btn btn-info" data-toggle="popover" data-placement="bottom" title="Realtime Traffic " data-content="And here's some amazing content. It's very engaging. Right?">View details &raquo;</button>
-      </div>
-      <div class="container">
+        <button id="nf5qosSBtn" type="button" class="btn btn-primary" data-toggle="popover" data-placement="bottom" title="Realtime Traffic " data-content="And here's some amazing content. It's very engaging. Right?">Know details &raquo;</button>
+        <a class="btn btn-primary" href="#" role="button">Go alternitive roads &raquo;</a>
+      <!-- </div> -->
+      <!-- <div class="container"> -->
         <h3>Toucheng to Nankang:</h3>
         <span id="nf5qosN"></span>
         <span id="nf5qosNTime"></span><p></p>
-        <button id="nf5qosNBtn" type="button" class="btn btn-info" data-toggle="popover" data-placement="bottom" title="Realtime Traffic" data-content="And here's some amazing content. It's very engaging. Right?">View details &raquo;</button>
+        <button id="nf5qosNBtn" type="button" class="btn btn-primary" data-toggle="popover" data-placement="bottom" title="Realtime Traffic" data-content="And here's some amazing content. It's very engaging. Right?">Know details &raquo;</button>
+        <a class="btn btn-primary" href="#" role="button">Go alternitive roads &raquo;</a>
+        <!--
         <p></p>
-        <br><br>
         <p><a class="btn btn-primary btn-lg" href="#" role="button">Go alternitive roads &raquo;</a></p>
-      </div>
+        -->
+      <!-- </div> -->
     </div>
 
     <div class="container">
@@ -157,9 +160,21 @@
         
         $(document).ready(function(){
                           $('[data-toggle="popover"]').popover({
-                                 placement : 'right'
-                                });
+                                 placement : 'top'
                           });
+        });
+                          
+        $("button").click(function(){
+                          $("#nf5qosSBtn").attr("data-content", function(i, origValue){
+                                return "test"
+                          });
+                          
+                          
+                          $("#nf5qosNBtn").attr("data-content", function(i, origValue){
+                                return "test2"
+                          });
+        });
+
     </script>
   </body>
 </html>
