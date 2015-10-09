@@ -15,6 +15,11 @@
 
     <!-- Custom styles for this template -->
     <link href="./css/jumbotron.css" rel="stylesheet">
+        
+    <!-- Custom styles for this template -->
+    <!-- <link href="./css/theme.css" rel="stylesheet"> -->
+    <!-- <link href="./css/bootstrap-theme.min.css" rel="stylesheet"> -->
+
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -58,16 +63,19 @@
     <div class="jumbotron">
       <div class="container">
         <h1>Current Freeway 5 Traffic</h1>
-        <h3>Taipei to Yilan:</h3>
-        <div id="nf5qosS"></div>
-        Status: Flowing traffic<br>
-        Estimated Travel Time: 30mins<br>
-        <h3>Yilan to Taipei:</h3>
-        Status: Queueing traffic<br>
-        Estimated Travel Time: 55mins<br>
+        <h3>Nankang to Toucheng:</h3>
+        <span id="nf5qosS"></span>
+        <span id="nf5qosSTime"></span><p></p>
+        <button id="nf5qosSBtn" type="button" class="btn btn-info" data-toggle="popover" data-placement="bottom" title="Realtime Traffic " data-content="And here's some amazing content. It's very engaging. Right?">View details &raquo;</button>
+      </div>
+      <div class="container">
+        <h3>Toucheng to Nankang:</h3>
+        <span id="nf5qosN"></span>
+        <span id="nf5qosNTime"></span><p></p>
+        <button id="nf5qosNBtn" type="button" class="btn btn-info" data-toggle="popover" data-placement="bottom" title="Realtime Traffic" data-content="And here's some amazing content. It's very engaging. Right?">View details &raquo;</button>
         <p></p>
-        
-        <p><a class="btn btn-primary btn-lg" href="#" role="button">Check detail &raquo;</a>  <a class="btn btn-primary btn-lg" href="#" role="button">Go alternitive roads &raquo;</a></p>
+        <br><br>
+        <p><a class="btn btn-primary btn-lg" href="#" role="button">Go alternitive roads &raquo;</a></p>
       </div>
     </div>
 
@@ -102,20 +110,55 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="./js/jquery.min.js"></script>
+    <script src="./js/jquery-1.11.3.min.js"></script>
     <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/tooltip.js"></script>
+    <script src="./js/popover.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
     <script>
         $(document).ready(function(){
                           $.ajax({
                                  type: "GET",
-                                 url: "http://220.132.10.161:5566/nf5qosS",
+                                 url: "http://220.132.10.161:5566/routeqoslist",
                                  dataType: 'json',
                                  cache: false,
                                  success: function(data){
-                                    $("#nf5qosS").text(data);
+                                    $.each(data, function(i, item)
+                                    {
+                                        if(item.RouteName == 'route_nf5_s')
+                                        {
+                                           if(item.JamFactor <= 0.1)
+                                           {
+                                                qos = 'Free flowing';
+                                           } else if(item.JamFactor <= 0.5) {
+                                                qos = 'Intensive';
+                                           } else {
+                                                qos = 'Queuing'
+                                           }
+                                           tf = parseInt(item.TrafficTime / 60)
+                                           $("#nf5qosS").text("Traffic: " + qos + ", Travel time: " + tf +" mins");
+                                        }else if(item.RouteName == 'route_nf5_n'){
+                                           if(item.JamFactor <= 0.1)
+                                           {
+                                                qos = 'Free flowing';
+                                           } else if(item.JamFactor <= 0.5) {
+                                                qos = 'Intensive';
+                                           } else {
+                                                qos = 'Queuing'
+                                           }
+                                           tf = parseInt(item.TrafficTime / 60)
+                                           $("#nf5qosN").text("Traffic: " + qos + ", Travel time: " + tf +" mins");
+                                        }
+                                    });
+                                 
                                  }});
+                          });
+        
+        $(document).ready(function(){
+                          $('[data-toggle="popover"]').popover({
+                                 placement : 'right'
+                                });
                           });
     </script>
   </body>
