@@ -64,23 +64,59 @@
     <div class="jumbotron">
       <div class="container">
         <h1>Current Freeway 5 Traffic</h1>
-        <h3>Nankang to Toucheng:</h3>
-        <span id="nf5qosS"></span>
-        <span id="nf5qosSTime"></span><p></p>
-        <button id="nf5qosSBtn" type="button" class="btn btn-primary" data-toggle="popover" data-placement="bottom" title="Realtime Traffic " data-content="And here's some amazing content. It's very engaging. Right?">Know details &raquo;</button>
-        <a class="btn btn-primary" href="#" role="button">Go alternitive roads &raquo;</a>
-      </div>
-      <div class="container">
-        <h3>Toucheng to Nankang:</h3>
-        <span id="nf5qosN"></span>
-        <span id="nf5qosNTime"></span><p></p>
-        <button id="nf5qosNBtn" type="button" class="btn btn-primary" data-toggle="popover" data-placement="bottom" title="Realtime Traffic" data-content="And here's some amazing content. It's very engaging. Right?">Know details &raquo;</button>
-        <a class="btn btn-primary" href="#" role="button">Go alternitive roads &raquo;</a>
-        <!--
-        <p></p>
-        <p><a class="btn btn-primary btn-lg" href="#" role="button">Go alternitive roads &raquo;</a></p>
-        -->
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingOne">
+                    <h4 class="panel-title">
+                        <a id="title1" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                            Loading ...
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+                        Loading ...
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingTwo">
+                    <h4 class="panel-title">
+                        <a id="title2" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Loading ...
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                    <div class="panel-body">
+                        Loading ...
+                    </div>
+                </div>
+            </div>
+        </div>
+       <a class="btn btn-primary" href="" role="button">Update</a>&nbsp;<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Go alternitive roads &raquo;</button>
        </div>
+      
+       </div>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Alternitive Roads of Freeway 5</h4>
+                </div>
+                <div id="modelcontent" class="modal-body">
+                    pick a alternitive road...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="container">
@@ -89,17 +125,19 @@
         <div class="col-md-4">
           <h2>Earn Coupon Now!</h2>
           <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">EARN COUPON &raquo;</a></p>
+          <p><a class="btn btn-default" href="http://220.132.10.161" role="button">Explore &raquo;</a> <a class="btn btn-default" href="" role="button">Upload &raquo;</a></p>
         </div>
+        <!--
         <div class="col-md-4">
           <h2>Check out Specials</h2>
           <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
           <p><a class="btn btn-default" href="http://220.132.10.161" role="button">VIEW SPECIALS &raquo;</a></p>
-       </div>
+        </div>
+        -->
         <div class="col-md-4">
-          <h2>Know Alternitive Roads</h2>
+          <h2>Alternitive Roads</h2>
           <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn btn-default" href="#" role="button">DISCOVER &raquo;</a></p>
+          <p><a class="btn btn-default" href="#" role="button">Discover &raquo;</a></p>
         </div>
       </div>
 
@@ -118,10 +156,49 @@
     <script src="./js/bootstrap.min.js"></script>
     <script src="./js/tooltip.js"></script>
     <script src="./js/popover.js"></script>
+    <script src="./js/button.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
+    
+    <!-- Start of @lumi's JS -->
     <script>
         $(document).ready(function(){
+                          $.ajax({
+                                 type: "GET",
+                                 url: "http://220.132.10.161:5566/nf5secqosS",
+                                 dataType: 'json',
+                                 cache: false,
+                                 success: function(data){
+                                    htmlt1 = "&nbsp;&nbsp;&nbsp;&nbsp;"
+                                    htmlt2 = " : "
+                                    htmlt3 = " km/hr<br>&nbsp;&nbsp;&nbsp;&nbsp;"
+                                    $.each(data, function(i, item)
+                                    {
+                                        htmlt1 = htmlt1 + item.RouteName + htmlt2 + parseInt(item.Speed) + htmlt3;
+                                           
+                                    });
+                                    $("#collapseOne").html("<br>" + htmlt1);
+                                 }
+                          });
+                          
+                          $.ajax({
+                                 type: "GET",
+                                 url: "http://220.132.10.161:5566/nf5secqosN",
+                                 dataType: 'json',
+                                 cache: false,
+                                 success: function(data){
+                                    htmlt1 = "&nbsp;&nbsp;&nbsp;&nbsp;"
+                                    htmlt2 = " : "
+                                    htmlt3 = " km/hr<br>&nbsp;&nbsp;&nbsp;&nbsp;"
+                                    $.each(data, function(i, item)
+                                    {
+                                        htmlt1 = htmlt1 + item.RouteName + htmlt2 + parseInt(item.Speed) + htmlt3;
+                                        
+                                    });
+                                 $("#collapseTwo").html("<br>" + htmlt1);
+                                 }
+                          });
+
                           $.ajax({
                                  type: "GET",
                                  url: "http://220.132.10.161:5566/routeqoslist",
@@ -132,51 +209,39 @@
                                     {
                                         if(item.RouteName == 'route_nf5_s')
                                         {
-                                           if(item.JamFactor <= 0.1)
+                                           tf = parseInt(item.TrafficTime / 60)
+                                           
+                                           if(item.JamFactor <= 0.15)
                                            {
-                                                qos = 'Free flowing';
-                                           } else if(item.JamFactor <= 0.5) {
+                                                qos = 'Flowing';
+                                                $("#title1").html( "Head South (Nankang-Toucheng): <font color='green'>" + qos + "</font>");
+                                           } else if(item.JamFactor <= 0.3) {
                                                 qos = 'Intensive';
+                                                $("#title1").html( "Head South (Nankang-Toucheng): <font color='orange'>" + qos + "</font>");
                                            } else {
                                                 qos = 'Queuing'
+                                                $("#title1").html( "Head South (Nankang-Toucheng): <font color='red'>" + qos + "</font>");
                                            }
-                                           tf = parseInt(item.TrafficTime / 60)
-                                           $("#nf5qosS").text("Traffic: " + qos + ", Travel time: " + tf +" mins");
                                         }else if(item.RouteName == 'route_nf5_n'){
-                                           if(item.JamFactor <= 0.1)
-                                           {
-                                                qos = 'Free flowing';
-                                           } else if(item.JamFactor <= 0.5) {
-                                                qos = 'Intensive';
-                                           } else {
-                                                qos = 'Queuing'
-                                           }
                                            tf = parseInt(item.TrafficTime / 60)
-                                           $("#nf5qosN").text("Traffic: " + qos + ", Travel time: " + tf +" mins");
+                                           
+                                           if(item.JamFactor <= 0.15)
+                                           {
+                                                qos = 'Flowing';
+                                                $("#title2").html( "Head North (Toucheng-Nankang): <font color='green'>" + qos + "</font>");
+                                           } else if(item.JamFactor <= 0.3) {
+                                                qos = 'Intensive';
+                                                $("#title2").html( "Head North (Toucheng-Nankang): <font color='orange'>" + qos + "</font>");
+                                           } else {
+                                                qos = 'Queuing';
+                                                $("#title2").html( "Head North (Toucheng-Nankang): <font color='red'>" + qos + "</font>");
+                                           }
                                         }
                                     });
-                                 
-                                 }});
+                                 }
                           });
-        
-        $(document).ready(function(){
-                          $('[data-toggle="popover"]').popover({
-                                 placement : 'top'
-                          });
-        });
-                          
-        $("button").click(function(){
-                          
-                          $("#nf5qosSBtn").attr("data-content", function(i, origValue){
-                                return "hubert test"
-                          });
-                          
-                          
-                          $("#nf5qosNBtn").attr("data-content", function(i, origValue){
-                                return "hubert test2"
-                          });
-        });
-
+                });
     </script>
+    <!-- End of @lumi's JS -->
   </body>
 </html>

@@ -64,14 +64,6 @@
     <div class="jumbotron">
       <div class="container">
         <h1>Current Freeway 5 Traffic</h1>
-        <!--
-        <h4>Nankang to Toucheng:</h4>
-        <span id="nf5qosS" ></span>
-        <span id="nf5qosSTime"></span><p></p>
-        <button id="nf5qosSBtn" type="button" class="btn btn-primary" data-toggle="popover" data-placement="bottom" title="Realtime Traffic " data-content="And here's some amazing content. It's very engaging. Right?">View details &raquo;</button>
-        <a class="btn btn-primary" href="#" role="button">Go alternitive roads &raquo;</a>
-      </div><p></p>
-        -->
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="headingOne">
@@ -83,7 +75,7 @@
                 </div>
                 <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                     <div class="panel-body">
-                        Empty
+                        Loading ...
                     </div>
                 </div>
             </div>
@@ -97,24 +89,34 @@
                 </div>
                 <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                     <div class="panel-body">
-                        Empty
+                        Loading ...
                     </div>
                 </div>
             </div>
         </div>
-        <!--
-      <div class="container">
-        <h4>Toucheng to Nankang:</h4>
-        <span id="nf5qosN"></span>
-        <span id="nf5qosNTime"></span><p></p>
-        <button id="nf5qosNBtn" type="button" class="btn btn-primary" data-toggle="popover" data-placement="bottom" title="Realtime Traffic" data-content="And here's some amazing content. It's very engaging. Right?">View details &raquo;</button>
-        <a class="btn btn-primary" href="#" role="button">Go alternitive roads &raquo;</a>
-      </div>
-        -->
-        <a id="update" class="btn btn-primary" href="#" role="button">Update</a>&nbsp;<a class="btn btn-primary" href="#" role="button">Go alternitive roads &raquo;</a>
+       <a class="btn btn-primary" href="" role="button">Update</a>&nbsp;<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Go alternitive roads &raquo;</button>
        </div>
       
        </div>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Alternitive Roads of Freeway 5</h4>
+                </div>
+                <div id="modelcontent" class="modal-body">
+                    pick a alternitive road...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="container">
@@ -154,14 +156,13 @@
     <script src="./js/bootstrap.min.js"></script>
     <script src="./js/tooltip.js"></script>
     <script src="./js/popover.js"></script>
+    <script src="./js/button.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
+    
+    <!-- Start of @lumi's JS -->
     <script>
         $(document).ready(function(){
-                          //$('[data-toggle="popover"]').popover({
-                          //       placement : 'top'
-                          //});
-                          
                           $.ajax({
                                  type: "GET",
                                  url: "http://220.132.10.161:5566/nf5secqosS",
@@ -210,11 +211,11 @@
                                         {
                                            tf = parseInt(item.TrafficTime / 60)
                                            
-                                           if(item.JamFactor <= 0.25)
+                                           if(item.JamFactor <= 0.15)
                                            {
                                                 qos = 'Flowing';
                                                 $("#title1").html( "Head South (Nankang-Toucheng): <font color='green'>" + qos + "</font>");
-                                           } else if(item.JamFactor <= 0.5) {
+                                           } else if(item.JamFactor <= 0.3) {
                                                 qos = 'Intensive';
                                                 $("#title1").html( "Head South (Nankang-Toucheng): <font color='orange'>" + qos + "</font>");
                                            } else {
@@ -224,11 +225,11 @@
                                         }else if(item.RouteName == 'route_nf5_n'){
                                            tf = parseInt(item.TrafficTime / 60)
                                            
-                                           if(item.JamFactor <= 0.25)
+                                           if(item.JamFactor <= 0.15)
                                            {
                                                 qos = 'Flowing';
                                                 $("#title2").html( "Head North (Toucheng-Nankang): <font color='green'>" + qos + "</font>");
-                                           } else if(item.JamFactor <= 0.5) {
+                                           } else if(item.JamFactor <= 0.3) {
                                                 qos = 'Intensive';
                                                 $("#title2").html( "Head North (Toucheng-Nankang): <font color='orange'>" + qos + "</font>");
                                            } else {
@@ -237,89 +238,10 @@
                                            }
                                         }
                                     });
-                                 
                                  }
                           });
                 });
-                
-                $("#update").click(function() {
-                                   $.ajax({
-                                          type: "GET",
-                                          url: "http://220.132.10.161:5566/routeqoslist",
-                                          dataType: 'json',
-                                          cache: false,
-                                          success: function(data){
-                                          $.each(data, function(i, item)
-                                          {
-                                                 if(item.RouteName == 'route_nf5_s')
-                                                 {
-                                                    tf = parseInt(item.TrafficTime / 60)
-                                                 
-                                                    if(item.JamFactor <= 0.2)
-                                                    {
-                                                        qos = 'Flowing';
-                                                        $("#title1").html( "Head South (Nankang-Toucheng): <font color='green'>" + qos + "</font>");
-                                                    } else if(item.JamFactor <= 0.5) {
-                                                        qos = 'Intensive';
-                                                        $("#title1").html( "Head South (Nankang-Toucheng): <font color='orange'>" + qos + "</font>");
-                                                    } else {
-                                                        qos = 'Queuing'
-                                                        $("#title1").html( "Head South (Nankang-Toucheng): <font color='red'>" + qos + "</font>");
-                                                 }
-                                                 }else if(item.RouteName == 'route_nf5_n'){
-                                                    tf = parseInt(item.TrafficTime / 60)
-                                                 
-                                                    if(item.JamFactor <= 0.2)
-                                                    {
-                                                        qos = 'Flowing';
-                                                        $("#title2").html( "Head North (Toucheng-Nankang): <font color='green'>" + qos + "</font>");
-                                                    } else if(item.JamFactor <= 0.5) {
-                                                        qos = 'Intensive';
-                                                        $("#title2").html( "Head North (Toucheng-Nankang): <font color='orange'>" + qos + "</font>");
-                                                    } else {
-                                                        qos = 'Queuing';
-                                                        $("#title2").html( "Head North (Toucheng-Nankang): <font color='red'>" + qos + "</font>");
-                                                    }
-                                                 }
-                                          });
-                                          }
-                                    });
-                                   $.ajax({
-                                          type: "GET",
-                                          url: "http://220.132.10.161:5566/nf5secqosS",
-                                          dataType: 'json',
-                                          cache: false,
-                                          success: function(data){
-                                          htmlt1 = "&nbsp;&nbsp;&nbsp;&nbsp;"
-                                          htmlt2 = " : "
-                                          htmlt3 = " km/hr<br>&nbsp;&nbsp;&nbsp;&nbsp;"
-                                          $.each(data, function(i, item)
-                                                 {
-                                                 htmlt1 = htmlt1 + item.RouteName + htmlt2 + parseInt(item.Speed) + htmlt3;
-                                                 
-                                                 });
-                                          $("#collapseOne").html("<br>" + htmlt1);
-                                          }
-                                          });
-                                   
-                                   $.ajax({
-                                          type: "GET",
-                                          url: "http://220.132.10.161:5566/nf5secqosN",
-                                          dataType: 'json',
-                                          cache: false,
-                                          success: function(data){
-                                          htmlt1 = "&nbsp;&nbsp;&nbsp;&nbsp;"
-                                          htmlt2 = " : "
-                                          htmlt3 = " km/hr<br>&nbsp;&nbsp;&nbsp;&nbsp;"
-                                          $.each(data, function(i, item)
-                                                 {
-                                                 htmlt1 = htmlt1 + item.RouteName + htmlt2 + parseInt(item.Speed) + htmlt3;
-                                                 
-                                                 });
-                                          $("#collapseTwo").html("<br>" + htmlt1);
-                                          }
-                                          });
-                });
     </script>
+    <!-- End of @lumi's JS -->
   </body>
 </html>
