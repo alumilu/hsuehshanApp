@@ -60,7 +60,7 @@
       </div>
     </nav>
 
-    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <!-- Jumbotron -->
     <div class="jumbotron">
       <div class="container">
         <h1>Current Freeway 5 Traffic</h1>
@@ -162,10 +162,15 @@
     
     <!-- Start of @lumi's JS -->
     <script>
+        mcontent = "";
+        url_nf5secqosS = "http://220.132.10.161:5566/nf5secqosS";
+        url_nf5secqosN = "http://220.132.10.161:5566/nf5secqosN";
+        url_routeqosList = "http://220.132.10.161:5566/routeqoslist";
+        
         $(document).ready(function(){
                           $.ajax({
                                  type: "GET",
-                                 url: "http://220.132.10.161:5566/nf5secqosS",
+                                 url: url_nf5secqosS,
                                  dataType: 'json',
                                  cache: false,
                                  success: function(data){
@@ -183,13 +188,13 @@
                           
                           $.ajax({
                                  type: "GET",
-                                 url: "http://220.132.10.161:5566/nf5secqosN",
+                                 url: url_nf5secqosN,
                                  dataType: 'json',
                                  cache: false,
                                  success: function(data){
-                                    htmlt1 = "&nbsp;&nbsp;&nbsp;&nbsp;"
-                                    htmlt2 = " : "
-                                    htmlt3 = " km/hr<br>&nbsp;&nbsp;&nbsp;&nbsp;"
+                                    htmlt1 = "&nbsp;&nbsp;&nbsp;&nbsp;";
+                                    htmlt2 = " : ";
+                                    htmlt3 = " km/hr<br>&nbsp;&nbsp;&nbsp;&nbsp;";
                                     $.each(data, function(i, item)
                                     {
                                         htmlt1 = htmlt1 + item.RouteName + htmlt2 + parseInt(item.Speed) + htmlt3;
@@ -201,7 +206,7 @@
 
                           $.ajax({
                                  type: "GET",
-                                 url: "http://220.132.10.161:5566/routeqoslist",
+                                 url: url_routeqosList,
                                  dataType: 'json',
                                  cache: false,
                                  success: function(data){
@@ -209,7 +214,7 @@
                                     {
                                         if(item.RouteName == 'route_nf5_s')
                                         {
-                                           tf = parseInt(item.TrafficTime / 60)
+                                           tf = parseInt(item.TrafficTime / 60);
                                            
                                            if(item.JamFactor <= 0.15)
                                            {
@@ -223,7 +228,7 @@
                                                 $("#title1").html( "Head South (Nankang-Toucheng): <font color='red'>" + qos + "</font>");
                                            }
                                         }else if(item.RouteName == 'route_nf5_n'){
-                                           tf = parseInt(item.TrafficTime / 60)
+                                           tf = parseInt(item.TrafficTime / 60);
                                            
                                            if(item.JamFactor <= 0.15)
                                            {
@@ -236,11 +241,92 @@
                                                 qos = 'Queuing';
                                                 $("#title2").html( "Head North (Toucheng-Nankang): <font color='red'>" + qos + "</font>");
                                            }
+                                        }else if(item.RouteName == 'route_t2_n'){
+                                           jf = parseInt(item.TrafficTime / 60);
+                                           
+                                           if(item.JamFactor <= 0.15)
+                                           {
+                                                qos = 'Flowing';
+                                           }else if(item.JamFactor <= 0.3){
+                                                qos = 'Intensive';
+                                           }else{
+                                                qos = 'Queuing';
+                                           }
+                                           mcontent = mcontent + "Hwy 2 (North): " + qos + "<br>";
+                                        }else if(item.RouteName == 'route_t2_s'){
+                                           jf = parseInt(item.TrafficTime / 60);
+                                           
+                                           if(item.JamFactor <= 0.15)
+                                           {
+                                                qos = 'Flowing';
+                                           }else if(item.JamFactor <= 0.3){
+                                                qos = 'Intensive';
+                                           }else{
+                                                qos = 'Queuing';
+                                           }
+                                           mcontent = mcontent + "Hwy 2 (Sourth): " + qos + "<br>";
+                                           
+                                        }else if(item.RouteName == 'route_t2c-t2_n'){
+                                           jf = parseInt(item.TrafficTime / 60);
+                                           
+                                           if(item.JamFactor <= 0.15)
+                                           {
+                                                qos = 'Flowing';
+                                           }else if(item.JamFactor <= 0.3){
+                                                qos = 'Intensive';
+                                           }else{
+                                                qos = 'Queuing';
+                                           }
+                                           mcontent = mcontent + "Hwy 2C & Hwy 2 (North): " + qos + "<br>";
+                                           
+                                        }else if(item.RouteName == 'route_t2c-t2_s'){
+                                           jf = parseInt(item.TrafficTime / 60);
+                                           
+                                           if(item.JamFactor <= 0.15)
+                                           {
+                                                qos = 'Flowing';
+                                           }else if(item.JamFactor <= 0.3){
+                                                qos = 'Intensive';
+                                           }else{
+                                                qos = 'Queuing';
+                                           }
+                                           mcontent = mcontent + "Hwy 2C & Hwy 2 (South): " + qos + "<br>";
+                                           
+                                        }else if(item.RouteName == 'route_t9_n'){
+                                           jf = parseInt(item.TrafficTime / 60);
+                                           
+                                           if(item.JamFactor <= 0.15)
+                                           {
+                                                qos = 'Flowing';
+                                           }else if(item.JamFactor <= 0.3){
+                                                qos = 'Intensive';
+                                           }else{
+                                                qos = 'Queuing';
+                                           }
+                                           mcontent = mcontent + "Hwy 9 (North): " + qos + "<br>";
+                                           
+                                        }else if(item.RouteName == 'route_t9_s'){
+                                           jf = parseInt(item.TrafficTime / 60);
+                                           
+                                           if(item.JamFactor <= 0.15)
+                                           {
+                                                qos = 'Flowing';
+                                           }else if(item.JamFactor <= 0.3){
+                                                qos = 'Intensive';
+                                           }else{
+                                                qos = 'Queuing';
+                                           }
+                                           mcontent = mcontent + "Hwy 9 (South): " + qos + "<br>";
+
                                         }
                                     });
                                  }
                           });
                 });
+                
+                $('#myModal').on('show.bs.modal', function (e) {
+                    $("#modelcontent").html(mcontent);
+                })
     </script>
     <!-- End of @lumi's JS -->
   </body>
