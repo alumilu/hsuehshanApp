@@ -60,10 +60,11 @@
       </div>
     </nav>
 
-    <!-- Jumbotron -->
+
     <div class="jumbotron">
       <div class="container">
         <h1>Current Freeway 5 Traffic</h1>
+        <!-- Panel Group -->
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="headingOne">
@@ -94,12 +95,12 @@
                 </div>
             </div>
         </div>
+        <!-- Panel Group -->
        <a class="btn btn-primary" href="" role="button">Update</a>&nbsp;<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Go alternitive roads &raquo;</button>
        </div>
       
        </div>
     </div>
-    <!-- Jumbotron -->
     
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -110,7 +111,73 @@
                     <h4 class="modal-title" id="myModalLabel">Alternitive Roads of Freeway 5</h4>
                 </div>
                 <div id="modelcontent" class="modal-body">
-                    pick a alternitive road...
+                    <!-- Nav tabs -->
+                    <ul id="mytabs" class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#headsouth" aria-controls="home" role="tab" data-toggle="tab">Head South</a></li>
+                        <li role="presentation"><a href="#headnorth" aria-controls="profile" role="tab" data-toggle="tab">Head North</a></li>
+                        <!-- <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li> -->
+                        <!-- <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li> -->
+                    </ul>
+                    
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="headsouth">
+                            <br>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 id="panel_title_s1" class="panel-title">Hwy 2 </h3>
+                                </div>
+                                <div id="panel_content_s1" class="panel-body">
+                                    Panel content
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 id="panel_title_s2" class="panel-title">Hwy 2c + Hwy 2 </h3>
+                                </div>
+                                <div id="panel_content_s2" class="panel-body">
+                                    Panel content
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 id="panel_title_s3" class="panel-title">Hwy 9</h3>
+                                </div>
+                                <div id="panel_content_s3" class="panel-body">
+                                    Panel content
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="headnorth">
+                            <br>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 id="panel_title_s4" class="panel-title">Hwy 2 </h3>
+                                </div>
+                                <div id="panel_content_s4" class="panel-body">
+                                    Panel content
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 id="panel_title_s5" class="panel-title">Hwy 2c + Hwy 2 </h3>
+                                </div>
+                                <div id="panel_content_s5" class="panel-body">
+                                    Panel content
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 id="panel_title_s6" class="panel-title">Hwy 9</h3>
+                                </div>
+                                <div id="panel_content_s6" class="panel-body">
+                                    Panel content
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div role="tabpanel" class="tab-pane" id="messages">...</div> -->
+                        <!-- <div role="tabpanel" class="tab-pane" id="settings">...</div> -->
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -164,10 +231,21 @@
     
     <!-- Start of @lumi's JS -->
     <script>
-        mcontent = "";
         url_nf5secqosS = "http://220.132.10.161:5566/nf5secqosS";
         url_nf5secqosN = "http://220.132.10.161:5566/nf5secqosN";
         url_routeqosList = "http://220.132.10.161:5566/routeqoslist";
+        title_hwy2s="Hwy 2: ";
+        title_hwy2cs="Hwy 2c + Hwy 2: ";
+        title_hwy9s="Hwy 9: ";
+        title_hwy2n="Hwy 2: ";
+        title_hwy2cn="Hwy 2c + Hwy 2: ";
+        title_hwy9n="Hwy 9: ";
+        content_hwy2s="";
+        content_hwy2cs="";
+        content_hwy9s="";
+        content_hwy2n="";
+        content_hwy2cn="";
+        content_hwy9n="";
         
         $(document).ready(function(){
                           $.ajax({
@@ -248,78 +326,84 @@
                                            
                                            if(item.JamFactor <= 0.15)
                                            {
-                                                qos = 'Flowing';
+                                                qos = "<font color='green'>Flowing</font>";
                                            }else if(item.JamFactor <= 0.3){
-                                                qos = 'Intensive';
+                                                qos = "<font color='orange'>Intensive</font>";
                                            }else{
-                                                qos = 'Queuing';
+                                                qos = "<font color='red'>Queuing</font>";
                                            }
-                                           mcontent = mcontent + "Hwy 2 (North): " + qos + "<br>";
+                                           title_hwy2n += qos;
+                                           content_hwy2n = "Distance: " + parseInt(item.Distance/1000) + " km<br>" + "Traffic Time: " + parseInt(item.TrafficTime/60) + " mins";
+                                           
                                         }else if(item.RouteName == 'route_t2_s'){
                                            jf = parseInt(item.TrafficTime / 60);
                                            
                                            if(item.JamFactor <= 0.15)
                                            {
-                                                qos = 'Flowing';
+                                                qos = "<font color='green'>Flowing</font>";
                                            }else if(item.JamFactor <= 0.3){
-                                                qos = 'Intensive';
+                                                qos = "<font color='orange'>Intensive</font>";
                                            }else{
-                                                qos = 'Queuing';
+                                                qos = "<font color='red'>Queuing</font>";
                                            }
-                                           mcontent = mcontent + "Hwy 2 (Sourth): " + qos + "<br>";
+                                           title_hwy2s += qos;
+                                           content_hwy2s = "Distance: " + parseInt(item.Distance/1000) + " km<br>" + "Traffic Time: " + parseInt(item.TrafficTime/60) + " mins";
                                            
                                         }else if(item.RouteName == 'route_t2c-t2_n'){
                                            jf = parseInt(item.TrafficTime / 60);
                                            
                                            if(item.JamFactor <= 0.15)
                                            {
-                                                qos = 'Flowing';
+                                                qos = "<font color='green'>Flowing</font>";
                                            }else if(item.JamFactor <= 0.3){
-                                                qos = 'Intensive';
+                                                qos = "<font color='orange'>Intensive</font>";
                                            }else{
-                                                qos = 'Queuing';
+                                                qos = "<font color='red'>Queuing</font>";
                                            }
-                                           mcontent = mcontent + "Hwy 2C & Hwy 2 (North): " + qos + "<br>";
+                                           title_hwy2cn += qos;
+                                           content_hwy2cn = "Distance: " + parseInt(item.Distance/1000) + " km<br>" + "Traffic Time: " + parseInt(item.TrafficTime/60) + " mins";
                                            
                                         }else if(item.RouteName == 'route_t2c-t2_s'){
                                            jf = parseInt(item.TrafficTime / 60);
                                            
                                            if(item.JamFactor <= 0.15)
                                            {
-                                                qos = 'Flowing';
+                                                qos = "<font color='green'>Flowing</font>";
                                            }else if(item.JamFactor <= 0.3){
-                                                qos = 'Intensive';
+                                                qos = "<font color='orange'>Intensive</font>";
                                            }else{
-                                                qos = 'Queuing';
+                                                qos = "<font color='red'>Queuing</font>";
                                            }
-                                           mcontent = mcontent + "Hwy 2C & Hwy 2 (South): " + qos + "<br>";
+                                           title_hwy2cs += qos;
+                                           content_hwy2cs = "Distance: " + parseInt(item.Distance/1000) + " km<br>" + "Traffic Time: " + parseInt(item.TrafficTime/60) + " mins";
                                            
                                         }else if(item.RouteName == 'route_t9_n'){
                                            jf = parseInt(item.TrafficTime / 60);
                                            
                                            if(item.JamFactor <= 0.15)
                                            {
-                                                qos = 'Flowing';
+                                                qos = "<font color='green'>Flowing</font>";
                                            }else if(item.JamFactor <= 0.3){
-                                                qos = 'Intensive';
+                                                qos = "<font color='orange'>Intensive</font>";
                                            }else{
-                                                qos = 'Queuing';
+                                                qos = "<font color='red'>Queuing</font>";
                                            }
-                                           mcontent = mcontent + "Hwy 9 (North): " + qos + "<br>";
+                                           title_hwy9n += qos;
+                                           content_hwy9n = "Distance: " + parseInt(item.Distance/1000) + " km<br>" + "Traffic Time: " + parseInt(item.TrafficTime/60) + " mins";
                                            
                                         }else if(item.RouteName == 'route_t9_s'){
                                            jf = parseInt(item.TrafficTime / 60);
                                            
                                            if(item.JamFactor <= 0.15)
                                            {
-                                                qos = 'Flowing';
+                                                qos = "<font color='green'>Flowing</font>";
                                            }else if(item.JamFactor <= 0.3){
-                                                qos = 'Intensive';
+                                                qos = "<font color='orange'>Intensive</font>";
                                            }else{
-                                                qos = 'Queuing';
+                                                qos = "<font color='red'>Queuing</font>";
                                            }
-                                           mcontent = mcontent + "Hwy 9 (South): " + qos + "<br>";
-
+                                           title_hwy9s += qos;
+                                           content_hwy9s = "Distance: " + parseInt(item.Distance/1000) + " km<br>" + "Traffic Time: " + parseInt(item.TrafficTime/60) + " mins";
                                         }
                                     });
                                  }
@@ -327,8 +411,25 @@
                 });
                 
                 $('#myModal').on('show.bs.modal', function (e) {
-                    $("#modelcontent").html(mcontent);
+                    $("#panel_title_s1").html(title_hwy2s);
+                    $("#panel_content_s1").html(content_hwy2s);
+                                 
+                    $("#panel_title_s2").html(title_hwy2cs);
+                    $("#panel_content_s2").html(content_hwy2cs);
+                                 
+                    $("#panel_title_s3").html(title_hwy9s);
+                    $("#panel_content_s3").html(content_hwy9s);
+                                 
+                    $("#panel_title_s4").html(title_hwy2n);
+                    $("#panel_content_s4").html(content_hwy2n);
+                                 
+                    $("#panel_title_s5").html(title_hwy2cn);
+                    $("#panel_content_s5").html(content_hwy2cn);
+                                 
+                    $("#panel_title_s6").html(title_hwy9n);
+                    $("#panel_content_s6").html(content_hwy9n);
                 })
+                
     </script>
     <!-- End of @lumi's JS -->
   </body>
