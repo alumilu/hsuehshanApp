@@ -96,7 +96,7 @@
             </div>
         </div>
         <!-- Panel Group -->
-       <a class="btn btn-primary" href="" role="button">Update</a>&nbsp;<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Go alternitive roads &raquo;</button>
+       <a class="btn btn-primary" href="" role="button">Refresh</a>&nbsp;<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"> Alternitive roads &raquo;</button>
        </div>
       
        </div>
@@ -231,9 +231,12 @@
     
     <!-- Start of @lumi's JS -->
     <script>
-        url_nf5secqosS = "http://220.132.10.161:5566/nf5secqosS";
-        url_nf5secqosN = "http://220.132.10.161:5566/nf5secqosN";
-        url_routeqosList = "http://220.132.10.161:5566/routeqoslist";
+        server = "";
+        
+        url_nf5secqosS = (server == "develop")?"http://192.168.43.168/nf5secqosS": "http://220.132.10.161:5566/nf5secqosS";
+        url_nf5secqosN = (server == "develop")?"http://192.168.43.168/nf5secqosN":"http://220.132.10.161:5566/nf5secqosN";
+        url_routeqosList = (server == "develop")?"http://192.168.43.168/routeqoslist":"http://220.132.10.161:5566/routeqoslist";
+    
         title_hwy2s="Hwy 2: ";
         title_hwy2cs="Hwy 2c + Hwy 2: ";
         title_hwy9s="Hwy 9: ";
@@ -246,6 +249,9 @@
         content_hwy2n="";
         content_hwy2cn="";
         content_hwy9n="";
+        str_qos_flowing = "Flowing";
+        str_qos_intensive = "Intensive";
+        str_qos_queuing = "Queuing";
         
         $(document).ready(function(){
                           $.ajax({
@@ -254,15 +260,35 @@
                                  dataType: 'json',
                                  cache: false,
                                  success: function(data){
-                                    htmlt1 = "&nbsp;&nbsp;&nbsp;&nbsp;"
-                                    htmlt2 = " : "
-                                    htmlt3 = " km/hr<br>&nbsp;&nbsp;&nbsp;&nbsp;"
+                                    htmlt1 = "&nbsp;&nbsp;&nbsp;&nbsp;";
+                                    htmlt2 = " : ";
+                                    htmlt3 = " km/hr<br>&nbsp;&nbsp;&nbsp;&nbsp;";
+                                    qoslevel = 1;
+                                    traveltime = 0;
+                                    traveltime2 = 0;
+                                 
                                     $.each(data, function(i, item)
                                     {
                                         htmlt1 = htmlt1 + item.RouteName + htmlt2 + parseInt(item.Speed) + htmlt3;
-                                           
+                                        qoslevel = (parseInt(item.Level) > qoslevel)?parseInt(item.Level):qoslevel;
+                                        
+                                        if (item.RouteId == "nfb0365" || item.RouteId == "nfb0367" || item.RouteId == "nfb0369")
+                                        {
+                                           traveltime += parseInt(item.TravelTime); //台北至頭城
+                                        } else if (item.RouteId == "nfb0373"){
+                                           traveltime2 = traveltime + parseInt(item.TravelTime); //台北到宜蘭
+                                        }
                                     });
-                                    $("#collapseOne").html("<br>" + htmlt1);
+                                    $("#collapseOne").html("<br>" + htmlt1 + "<br>&nbsp;&nbsp;&nbsp;&nbsp;Nankang to Toucheng: " + Math.round(traveltime/60) + " mins<br>&nbsp;&nbsp;&nbsp;&nbsp;Nankang to Yilan: " + Math.round(traveltime2/60) + " mins");
+                                 
+                                    if(qoslevel == 1)
+                                    {
+                                        $("#title1").html( "Head South(Nankang-Yilan): <font color='green'>" + str_qos_flowing + "</font>");
+                                    }else if(qoslevel == 4 || qoslevel == 3){
+                                        $("#title1").html( "Head South(Nankang-Yilan): <font color='red'>" + str_qos_queuing + "</font>");
+                                    }else{
+                                        $("#title1").html( "Head South(Nankang-Yilan): <font color='orange'>" + str_qos_intensive + "</font>");
+                                    }
                                  }
                           });
                           
@@ -275,12 +301,41 @@
                                     htmlt1 = "&nbsp;&nbsp;&nbsp;&nbsp;";
                                     htmlt2 = " : ";
                                     htmlt3 = " km/hr<br>&nbsp;&nbsp;&nbsp;&nbsp;";
+                                    qoslevel2 = 1;
+                                    traveltime = 0;
+                                    traveltime2 = 0;
                                     $.each(data, function(i, item)
                                     {
                                         htmlt1 = htmlt1 + item.RouteName + htmlt2 + parseInt(item.Speed) + htmlt3;
-                                        
+                                        qoslevel2 = (parseInt(item.Level) > qoslevel2)?parseInt(item.Level):qoslevel2;
+                                           
+                                        if (item.RouteId == "nfb0366" || item.RouteId == "nfb0368" || item.RouteId == "nfb0370")
+                                        {
+                                           traveltime += parseInt(item.TravelTime); //頭城至台北
+                                        } else if (item.RouteId == "nfb0374"){
+                                           traveltime2 = traveltime + parseInt(item.TravelTime); //宜蘭到台北
+                                        }
+
+                                        /*
+                                        if(qoslevel == 4){
+                                           htmlt1 = htmlt1 + item.RouteName + htmlt2 + parseInt(item.Speed) + " km/hr" + htmlt3;
+                                        }else if(qoslevel == 3 || qoslevel == 2){
+                                           htmlt1 = htmlt1 + item.RouteName + htmlt2 + parseInt(item.Speed) + " km/hr" + htmlt3;
+                                        }else{
+                                           htmlt1 = htmlt1 + item.RouteName + htmlt2 + "<font color='green'>" + parseInt(item.Speed) + " km/hr" + "</font>" + htmlt3;
+                                        }
+                                        **/
                                     });
-                                 $("#collapseTwo").html("<br>" + htmlt1);
+                                    $("#collapseTwo").html("<br>" + htmlt1 + "<br>&nbsp;&nbsp;&nbsp;&nbsp;Toucheng to Nankang: " + Math.round(traveltime/60) + " mins<br>&nbsp;&nbsp;&nbsp;&nbsp;Yilan to Nankang: " + Math.round(traveltime2/60) + " mins");
+                                 
+                                    if(qoslevel2 == 1)
+                                    {
+                                        $("#title2").html( "Head North(Yilan-Nankang): <font color='green'>" + str_qos_flowing + "</font>");
+                                    }else if(qoslevel2 == 4 || qoslevel2 == 3){
+                                        $("#title2").html( "Head North(Yilan-Nankang): <font color='red'>" + str_qos_queuing + "</font>");
+                                    }else{
+                                        $("#title2").html( "Head North(Yilan-Nankang): <font color='orange'>" + str_qos_intensive + "</font>");
+                                    }
                                  }
                           });
 
@@ -294,6 +349,7 @@
                                     {
                                         if(item.RouteName == 'route_nf5_s')
                                         {
+                                           /*
                                            tf = parseInt(item.TrafficTime / 60);
                                            
                                            if(item.JamFactor <= 0.15)
@@ -307,7 +363,9 @@
                                                 qos = 'Queuing'
                                                 $("#title1").html( "Head South (Nankang-Toucheng): <font color='red'>" + qos + "</font>");
                                            }
+                                           **/
                                         }else if(item.RouteName == 'route_nf5_n'){
+                                           /*
                                            tf = parseInt(item.TrafficTime / 60);
                                            
                                            if(item.JamFactor <= 0.15)
@@ -321,6 +379,7 @@
                                                 qos = 'Queuing';
                                                 $("#title2").html( "Head North (Toucheng-Nankang): <font color='red'>" + qos + "</font>");
                                            }
+                                           **/
                                         }else if(item.RouteName == 'route_t2_n'){
                                            jf = parseInt(item.TrafficTime / 60);
                                            
